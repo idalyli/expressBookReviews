@@ -4,6 +4,9 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
+const baseUrl= "http://localhost:5000";
+
+
 
 public_users.post("/register", (req, res) => {
     const username = req.body.username;
@@ -70,7 +73,7 @@ public_users.get('/title/:title', function (req, res) {
         }
     });
     if (foundTitle === true) {
-        res.send(bookByTitle)
+        return res.send(bookByTitle)
     }
     return res.status(404).json({message: "Title book not found "});
 });
@@ -88,7 +91,7 @@ public_users.get('/review/:isbn', function (req, res) {
 });
 
 const axios = require('axios').default;
-const reqBookList = axios.get("https://idalydiaz162-5000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai/");
+const reqBookList = axios.get(`${baseUrl}`);
 reqBookList.then(resp => {
     let bookList = resp.data;
     console.log("These are all books",JSON.stringify(bookList, null, 4));
@@ -97,7 +100,7 @@ reqBookList.then(resp => {
         console.log(err.toString());
     });
 
-const reqBookByIsbn = axios.get("https://idalydiaz162-5000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai/isbn/3");
+const reqBookByIsbn = axios.get(`${baseUrl}/isbn/3`);
 reqBookByIsbn.then(resp => {
     let bookByIsbn = resp.data;
     console.log("Book by isbn",JSON.stringify(bookByIsbn, null, 4));
@@ -107,7 +110,7 @@ reqBookByIsbn.then(resp => {
     });
 
 
-const reqBooksByAuthor = axios.get("https://idalydiaz162-5000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai/author/Unknown");
+const reqBooksByAuthor = axios.get(`${baseUrl}/author/Unknown`);
 reqBooksByAuthor.then(resp => {
     let booksByAuthor = resp.data;
     console.log("Books by author name",JSON.stringify(booksByAuthor, null, 4));
@@ -115,7 +118,7 @@ reqBooksByAuthor.then(resp => {
     .catch(err => {
         console.log(err.toString());
     });
-const reqBookByTitle = axios.get("https://idalydiaz162-5000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai/title/The Divine Comedy");
+const reqBookByTitle = axios.get(`${baseUrl}/title/The Divine Comedy`);
 
 reqBookByTitle.then(resp => {
     let bookByTitle = resp.data;
