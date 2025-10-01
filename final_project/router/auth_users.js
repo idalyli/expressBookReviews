@@ -98,7 +98,7 @@ regd_users.delete('/auth/review/:isbn', function (req, res) {
         let review = book.reviews[username]
         if (review) {
             delete book.reviews[username];
-            res.status(200).send("Review deleted")
+             return res.status(200).send("Review deleted")
         } else {
             return res.status(404).send("Not found review with of this user");
         }
