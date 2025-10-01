@@ -62,11 +62,16 @@ regd_users.post("/login", (req, res) => {
 regd_users.put("/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn
     let book = books[isbn]
+    const {comment, rating} = req.body
 
     if (book) {
+        if (!comment || typeof comment !== 'string') {
+            return res.status(400).json({error: 'Comment is required and must be a string'});
+        }
+        if (!Number.isInteger(rating) || rating < 0) {
+            return res.status(400).json({error: 'Rating must be a positive integer'});
+        }
         let username = req.session.authorization.username
-        let comment = req.body.comment
-        let rating = req.body.rating
         let reviews = book.reviews
         let review = reviews[username]
         if (review) {
